@@ -46,11 +46,11 @@ describe("#convertPersonalizationObjects", function() {
             id: 22222,
             content: `<span class="cbNonEditable" e-personalization="2">Last Name</span>`
         }];
-        let expectedIds = testObjects.map(obj => obj.id);
-        let convertedObjects = testObjects.map(obj => converter.convertPersonalizationObjects(obj));
-        let actualIds = convertedObjects.map(convertedArray => convertedArray[0].id);
-
+        let expectedIds = testObjects.map(object => object.id);
+        let actualIds = testObjects.map(object => converter.convertPersonalizationObjects(object))
+                        .map(convertedArray => convertedArray[0].id);
         let isAllIdsMatch = expectedIds.reduce((acc, id, index) => id === actualIds[index], true);
+        
         expect(isAllIdsMatch).to.be.true;
     });
 

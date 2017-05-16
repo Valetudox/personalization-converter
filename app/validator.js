@@ -1,7 +1,7 @@
 let cheerio = require('cheerio');
 
 module.exports = {
-    validate: function(input) {
+    isValid: function(input) {
         if (parseInt(cheerio(input('span')).attr('e-personalization')) && input.text) {
             return true;
         }

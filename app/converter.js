@@ -3,30 +3,30 @@ let personalizationSelectorValidator = require('./validator');
 
 module.exports = {
     convertPersonalizationObjects: function(contentObject) {
-       let content = cheerio.load(contentObject.content);
+       let context = cheerio.load(contentObject.content);
        let personalizations = [];
 
-       content('span').each((index, element) => {
-           if (personalizationSelectorValidator.validate(content)) {
-               personalizations.push(createPersonalizationObject(content, content(element), contentObject.id));
+       context('span').each((index, selector) => {
+           if (personalizationSelectorValidator.isValid(context)) {
+               personalizations.push(createPersonalizationObject(context, selector, contentObject.id));
            }
        });
        return personalizations;
     }
 };
 
-function createPersonalizationObject(content, input, id) {
+function createPersonalizationObject(context, selector, id) {
     let personalization = {};
 
     personalization.id = id;
-    personalization.contextField = parseInt(input.attr('e-personalization'));
-    personalization.text = input.text();
-    personalization.content = replaceSelectorInContext(content, input);
+    personalization.contextField = parseInt(context(selector).attr('e-personalization'));
+    personalization.text = context(selector).text();
+    personalization.content = replaceSelectorInContext(context, selector);
 
     return personalization;
 }
 
-function replaceSelectorInContext(content, input) {
+function replaceSelectorInContext(context, selector) {
     //TODO: Write replacement logic
-    return content.html();
+    return context.html();
 }
