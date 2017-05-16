@@ -3,23 +3,6 @@ let converter = require("../app/converter");
 let cheerio = require('cheerio')
 
 describe("#convertPersonalizationObjects", function() {
-   /*
-    it("should convert 0 objects if no span in HTML", function() {
-        let testObject = {
-            id: 54321,
-            content: '<a></a>'
-        };
-       expect(converter.convertPersonalizationObjects(testObject).length).to.equal(0);
-    });
-
-    it("should convert 0 objects if appropriate properties are not set", function() {
-        let testObject = {
-            id: 54321,
-            content: '<span>Last Name</span>'
-        };
-       expect(converter.convertPersonalizationObjects(testObject).length).to.equal(0);
-    });
-    */
     it("should convert 1 object in context", function() {
         let testObject = {
             id: 54321,
@@ -44,7 +27,7 @@ describe("#convertPersonalizationObjects", function() {
         let testObject = {
             id: 54321,
             content: `<span class="cbNonEditable" e-personalization="1">First Name</span>
-            <span class="cbNonEditable" e-personalization="2">Last Name</span>`
+                      <span class="cbNonEditable" e-personalization="2">Last Name</span>`
         };
         isActualIdsMatchExpected = converter.convertPersonalizationObjects(testObject)
             .map(convertedObject => convertedObject.id)
