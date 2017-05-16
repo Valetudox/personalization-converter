@@ -27,7 +27,6 @@ function createPersonalizationObject(content, input, id) {
 }
 
 function replaceSelectorInContext(content, input) {
-    let replaceString = content('<p>#TOKEN</p>');
-    input.replaceWith(replaceString);
+    //TODO: Write replacement logic
     return content.html();
 }
