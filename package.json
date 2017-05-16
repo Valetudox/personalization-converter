@@ -1,0 +1,16 @@
+{
+  "name": "mocha-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "cheerio": "^0.22.0",
+    "mocha": "^3.4.1"
+  }
+}
