@@ -8,7 +8,7 @@ module.exports = {
        let personalizations = context('span').toArray().map(element => {
          return createPersonalizationObject(context(element));
        });
-       return { personalizations: personalizations, id:contentObject.id };
+       return { personalizations: personalizations, id: contentObject.id };
     },
 
     convertPersonalizationList: function(contentObjects) {
@@ -16,18 +16,10 @@ module.exports = {
     }
 };
 
-function createPersonalizationObject(selector) {
-    let personalization = {};
-
-    personalization.id = uuid();
-    personalization.contextField = parseInt(selector.attr('e-personalization'));
-    personalization.text = selector.text();
-    personalization.content = replaceSelectorInContext(selector);
-
-    return personalization;
-}
-
-function replaceSelectorInContext(selector) {
-    //TODO: Write replacement logic
-    return selector.html();
+function createPersonalizationObject(tokenSpanElement) {
+    return {
+      id: uuid(),
+      contactField: parseInt(tokenSpanElement.attr('e-personalization')),
+      text: tokenSpanElement.text()
+    };
 }
