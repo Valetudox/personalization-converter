@@ -46,7 +46,7 @@ describe("#convertPersonalizationObjects", function() {
         expect(converter.convertPersonalizationObjects(testObject)[0].contextField).to.equal(value);
     });
 
-    it("should return an object where the text property shouldmatch the span's text value", function() {
+    it("should return an object where the text property should match the span's text value", function() {
         let text = `test text`
         let testObject = {
             id: 54321,
@@ -54,4 +54,40 @@ describe("#convertPersonalizationObjects", function() {
         };
         expect(converter.convertPersonalizationObjects(testObject)[0].text).to.equal(text);
     });
+});
+
+describe("#convertPersonalizationList", function() {
+    it("should convert a list of 3 items", function () {
+         let testObjects = [{
+             id: 11111,
+             content: `<span class="cbNonEditable" e-personalization="1">First Name</span>`
+         },
+         {
+             id: 22222,
+             content: `<span class="cbNonEditable" e-personalization="2">Middle Name</span>`
+         },
+         {
+             id: 33333,
+             content: `<span class="cbNonEditable" e-personalization="3">Last Name</span>`
+         }];
+        
+         expect(testObjects.length).to.equal(converter.convertPersonalizationList(testObjects).length);
+     });
+
+    it("should convert a list, where all object's id's matches", function () {
+        let testObjects = [{
+            id: 11111,
+            content: `<span class="cbNonEditable" e-personalization="1">First Name</span>`
+        },
+        {
+            id: 22222,
+            content: `<span class="cbNonEditable" e-personalization="2">Last Name</span>`
+        }];
+        let expectedIds = testObjects.map(object => object.id);
+        let actualIds = converter.convertPersonalizationList(testObjects)
+            .map(convertedArray => convertedArray[0].id);
+        let isAllIdsMatch = expectedIds.reduce((acc, id, index) => id === actualIds[index], true);
+         
+        expect(isAllIdsMatch).to.be.true;
+     });
 });

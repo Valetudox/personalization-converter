@@ -12,6 +12,10 @@ module.exports = {
            }
        });
        return personalizations;
+    },
+
+    convertPersonalizationList: function(contentObjects) {
+        return contentObjects.map(content => this.convertPersonalizationObjects(content));
     }
 };
 
