@@ -92,7 +92,7 @@ describe("#convertPersonalizationObjects", function() {
        expect(convertPersonalizationObjects(testObject).personalizations.length).to.equal(0);
     });
 
-    it.only("should not validate token with the properties not set", function() {
+    it("should not validate token with the properties not set", function() {
         let testObject = {
             id: 54321,
             content: `<span e-personalization="1">text</span><span class="cbNonEditable">text</span><span>text</span>`
