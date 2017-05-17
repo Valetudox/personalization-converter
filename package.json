@@ -2,7 +2,7 @@
   "name": "personalization-converter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app/converter.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
