@@ -1,6 +1,7 @@
 let expect = require("chai").expect;
 let converter = require("../app/converter");
 let cheerio = require('cheerio');
+let uuid = require('uuid-v4');
 
 describe("#convertPersonalizationObjects", function() {
 
@@ -32,17 +33,15 @@ describe("#convertPersonalizationObjects", function() {
        expect(converter.convertPersonalizationObjects(testObject).personalizations.length).to.equal(1);
     });
 
-    it("should return a list of objects where the id's should be the same as the input object's id", function() {
+    it("should the personalization's id be a valid UUID", function() {
         let testObject = {
             id: 54321,
-            content: `<span class="cbNonEditable" e-personalization="1">First Name</span>
-                      <span class="cbNonEditable" e-personalization="2">Last Name</span>`
+            content:
+            `<div>
+                <span class="cbNonEditable" e-personalization="1">First Name</span>
+            </div>`
         };
-        isActualIdsMatchExpected = converter.convertPersonalizationObjects(testObject).personalizations
-            .map(convertedObject => convertedObject.id)
-            .reduce((acc, id) => id === testObject.id, true);
-
-        expect(isActualIdsMatchExpected).to.be.true;
+       expect(uuid.isUUID(converter.convertPersonalizationObjects(testObject).personalizations.pop().id)).to.be.true;
     });
 
     it("should return a list of objects where the contextField should be the same as the e-personalization value", function() {
