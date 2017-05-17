@@ -1,12 +1,9 @@
 let cheerio = require('cheerio');
 
 module.exports = {
-    isValid: function(input) {
-        if (parseInt(cheerio(input('span')).attr('e-personalization')) && input.text) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    isValid: function(context) {
+        const selector = cheerio(context('span[class=cbNonEditable]'));
+        return selector.attr('e-personalization') !== undefined
+            && selector.html() !== undefined;
     }
 };
