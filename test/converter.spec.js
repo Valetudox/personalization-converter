@@ -24,7 +24,7 @@ describe("#convertPersonalizationObjects", function() {
        expect(converter.convertPersonalizationObjects(testObject).length).to.equal(1);
     });
 
-    it("all of the result object's id should be the same as the input object's id", function() {
+    it("should return an object where the id's should be the same as the input object's id", function() {
         let testObject = {
             id: 54321,
             content: `<span class="cbNonEditable" e-personalization="1">First Name</span>
@@ -37,33 +37,16 @@ describe("#convertPersonalizationObjects", function() {
         expect(isActualIdsMatchExpected).to.be.true;
     });
 
-    it("all the result object's id's match", function () {
-        let testObjects = [{
-            id: 11111,
-            content: `<span class="cbNonEditable" e-personalization="1">First Name</span>`
-        },
-        {
-            id: 22222,
-            content: `<span class="cbNonEditable" e-personalization="2">Last Name</span>`
-        }];
-        let expectedIds = testObjects.map(object => object.id);
-        let actualIds = testObjects.map(object => converter.convertPersonalizationObjects(object))
-                        .map(convertedArray => convertedArray[0].id);
-        let isAllIdsMatch = expectedIds.reduce((acc, id, index) => id === actualIds[index], true);
-        
-        expect(isAllIdsMatch).to.be.true;
-    });
-
-    it("the result object's contextField should be the same as the e-personalization value", function() {
-        let contextField = 3;
+    it("should return an object where the contextField should be the same as the e-personalization value", function() {
+        let value = 3;
         let testObject = {
             id: 54321,
-            content: `<span class="cbNonEditable" e-personalization="${contextField}">First Name</span>`
+            content: `<span class="cbNonEditable" e-personalization="${value}">First Name</span>`
         };
-        expect(converter.convertPersonalizationObjects(testObject)[0].contextField).to.equal(contextField);
+        expect(converter.convertPersonalizationObjects(testObject)[0].contextField).to.equal(value);
     });
 
-    it("the result object's text should be the same as the span's text value", function() {
+    it("should return an object where the text property shouldmatch the span's text value", function() {
         let text = `test text`
         let testObject = {
             id: 54321,
