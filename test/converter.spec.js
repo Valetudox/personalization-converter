@@ -2,6 +2,12 @@ let expect = require("chai").expect;
 let converter = require("../app/converter");
 let { convertPersonalizationObjects } = require('../app/converter');
 let cheerio = require('cheerio');
+let getFirstId = obj => obj[0].id;
+let getSecondId = obj => obj[1].id;
+let getFirstContactField = obj => obj.personalizations[0].contactField;
+let getFirstPersonalizationId = obj => obj.personalizations[0].id;
+let getSecondPersonalizationId = obj => obj.personalizations[1].id;
+let getFirstText = obj => obj.personalizations[0].text;
 
 describe("#convertPersonalizationObjects", function() {
 
@@ -43,7 +49,7 @@ describe("#convertPersonalizationObjects", function() {
             </div>`
         };
         const returnObjects = convertPersonalizationObjects(testObject).personalizations;
-        expect(returnObjects[0].id).to.not.eql(returnObjects[1].id);
+        expect(getFirstId(returnObjects)).to.not.eql(getSecondId(returnObjects));
     });
 
     it("should add contact field id to the collected personalizations from the token", function() {
@@ -52,7 +58,7 @@ describe("#convertPersonalizationObjects", function() {
             id: 54321,
             content: `<span class="cbNonEditable" e-personalization="${value}">First Name</span>`
         };
-        expect(convertPersonalizationObjects(testObject).personalizations.pop().contactField).to.equal(value);
+        expect(getFirstContactField(convertPersonalizationObjects(testObject))).to.equal(value);
     });
 
     it("should add display name to the collected personalization from the token", function() {
@@ -61,24 +67,39 @@ describe("#convertPersonalizationObjects", function() {
             id: 54321,
             content: `<span class="cbNonEditable" e-personalization="1">${text}</span>`
         };
-        expect(convertPersonalizationObjects(testObject).personalizations.pop().text).to.equal(text);
+        expect(getFirstText(convertPersonalizationObjects(testObject))).to.equal(text);
     });
 
-    it.skip("should return a list of objects where the personalization in the content property should be replaced", function() {
+    it("should return a list of objects where the personalizations in the content properties should be replaced with tokenids", function() {
         let testObject = {
             id: 54321,
-            content:
-            `<div>
-                <span class="cbNonEditable" e-personalization="1">text</span>
-            </div>`
+            content: `<div><span class="cbNonEditable" e-personalization="1">text</span><span class="cbNonEditable" e-personalization="2">text</span></div>`
         };
+        let actualObject = convertPersonalizationObjects(testObject);
         expectedContent =
-            `<div>
-                #TOKEN
-            </div>`;
-        expect(convertPersonalizationObjects(testObject).personalizations.pop().content.replace(/ /g, ''))
-            .to.equal(expectedContent.replace(/ /g, ''));
+          `<div>` +
+          `#personalization-token-${getFirstPersonalizationId(actualObject)}#` +
+          `#personalization-token-${getSecondPersonalizationId(actualObject)}#` +
+          `</div>`
+        expect(actualObject.content).to.equal(expectedContent);
     });
+
+    it("should not validate token with no text", function() {
+        let testObject = {
+            id: 54321,
+            content: `<span class="cbNonEditable" e-personalization="1"></span>`
+        };
+       expect(convertPersonalizationObjects(testObject).personalizations.length).to.equal(0);
+    });
+
+    it.only("should not validate token with the properties not set", function() {
+        let testObject = {
+            id: 54321,
+            content: `<span>text</span>`
+        };
+       expect(convertPersonalizationObjects(testObject).personalizations.length).to.equal(0);
+    });
+
 });
 
 describe("#convertPersonalizationList", function() {
