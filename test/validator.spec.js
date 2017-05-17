@@ -2,7 +2,7 @@ let expect    = require("chai").expect;
 let validator = require("../app/validator");
 let cheerio = require('cheerio');
 
-describe("#validator", function() {
+describe("#isValid", function() {
     it("should not validate if selector does not match", function() {
        expect(validator.isValid(cheerio.load(`<a></a>`))).to.be.false;
     });
