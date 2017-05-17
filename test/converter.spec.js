@@ -73,21 +73,4 @@ describe("#convertPersonalizationList", function() {
         
          expect(testObjects.length).to.equal(converter.convertPersonalizationList(testObjects).length);
      });
-
-    it("should convert a list, where all object's id's matches", function () {
-        let testObjects = [{
-            id: 11111,
-            content: `<span class="cbNonEditable" e-personalization="1">First Name</span>`
-        },
-        {
-            id: 22222,
-            content: `<span class="cbNonEditable" e-personalization="2">Last Name</span>`
-        }];
-        let expectedIds = testObjects.map(object => object.id);
-        let actualIds = converter.convertPersonalizationList(testObjects)
-            .map(convertedArray => convertedArray[0].id);
-        let isAllIdsMatch = expectedIds.reduce((acc, id, index) => id === actualIds[index], true);
-         
-        expect(isAllIdsMatch).to.be.true;
-     });
 });
